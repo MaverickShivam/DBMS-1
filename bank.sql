@@ -1,85 +1,71 @@
-create table branch
-(
-branch_name varchar2(20),
-branch_city varchar2(20),
-assests number(10,3),
-primary key(branch_name)
-);
+create table branchn( branch_name varchar2(20), branch_city varchar2(10), assets number(12,2), primary key(branch_name) );
+create table account( acc_no number(4), branch_name varchar2(10), balance number(12,2),primary key(acc_no), foreign key(branch_name) references branchn(branch_name) );
+create table depositor(customer_name varchar2(10),acc_no number(4),primary key(customer_name), foreign key(acc_no) references account(acc_no));
+create table customer( customer_name varchar2(10), customer_street varchar2(10), customer_city varchar2(10),foreign key(customer_name) references depositor(customer_name) );
+create table loan( loan_number number(4), branch_name varchar2(10), amount number(12,2),primary key(loan_number),foreign key(branch_name) references branchn(branch_name)  );
+create table borrower(customer_name varchar2(10), loan_number number(4), foreign key(customer_name)references depositor(customer_name), foreign key(loan_number)references loan(loan_number) );
 
-create table accounts
-(
-accno number(10),
-branch_name varchar2(20),
-balance number(10,2),
-primary key(accno),
-foreign key(branch_name) references branch(branch_name)
-);
+drop table branch;
 
-create table depositor
-(
-customer_name varchar2(20),
-customer_street varchar2(20),
-customer_city varchar2(20),
-primary key(customer_name)
-);
+insert into branchn values('SBI PD NAGAR','BANGALORE',200000);
+insert into branchn values('SBI RAJAJI NAGAR','BANGALORE',500000);
+insert into branchn values('SBI JAYANAGAR','BANGALORE',660000);
+insert into branchn values('SBI VIJAY NAGAR','BANGALORE',870000);
+insert into branchn values('SBI HOSAKEREHALLI','BANGALORE',550000);
 
-create table loan
-(
-loan_no number(10),
-branch_name varchar2(20),
-amount number(10,2),
-primary key(loan_no),
-foreign key(branch_name) references branch(branch_name)
-);
+select * from branchn;
 
-create table borrower
-(
-customer_name varchar2(20),
-loan_no number(10),
-foreign key(customer_name) references depositor(customer_name),
-foreign key(loan_no) references loan(loan_no)
-);
+alter table account modify branch_name varchar2(20);
+alter table account modify acc_no number(10);
 
-create table customer
-(
-customer_name varchar2(20),
-customer_street varchar2(20),
-customer_city varchar2(20),
-primary key(customer_name)
-);
+insert into account values(1234602,'SBI HOSAKEREHALLI',5000);
+insert into account values(1234603,'SBI VIJAY NAGAR',5000);
+insert into account values(1234604,'SBI JAYANAGAR',5000);
+insert into account values(1234605,'SBI RAJAJI NAGAR',10000);
+insert into account values(1234503,'SBI VIJAY NAGAR',40000);
+insert into account values(1234504,'SBI PD NAGAR',4000);
 
+select * from account;
 
-insert into branch values('HanumanthNagar', 'Banglore', 100000.01);
-insert into customer values('Manas Agarwal', 'abc', 'Banglore');
-insert into accounts values(12345678, 'HanumanthNagar', 10000.01);
-insert into depositor values('Manas Agarwal', 'abc', 'Banglore');
-insert into loan values(12345, 'HanumanthNagar', 10000.01);
-insert into borrower values('Manas Agarwal', 12345);
+alter table depositor modify customer_name varchar2(20);
+alter table depositor modify acc_no number(10);
 
-insert into branch values('Kathriguppe', 'Banglore', 100000.01);
-insert into customer values('Nilanshu Ranjan', 'abc', 'Banglore');
-insert into accounts values(1234567, 'Kathriguppe', 10000.01);
-insert into depositor values('Nilanshu Ranjan', 'abc', 'Banglore');
-insert into loan values(1234, 'Kathriguppe', 10000.01);
-insert into borrower values('Nilanshu Ranjan', 1234);
+insert into depositor values('KEZAR', 1234604);
+insert into depositor values('LAL KRISHNA',1234603);
+insert into depositor values('RAHUL', 1234602);
+insert into depositor values('LALLU', 1234504);
+insert into depositor values('FAIZAL', 1234605);
+insert into depositor values('RAJEEV',1234503);
 
-insert into branch values('Whitefield', 'Banglore', 100000.01);
-insert into customer values('Pranav Mukharjee', 'abc', 'Banglore');
-insert into accounts values(123456, 'Whitefield', 10000.01);
-insert into depositor values('Pranav Mukharjee', 'abc', 'Banglore');
-insert into loan values(123, 'Whitefield', 10000.01);
-insert into borrower values('Pranav Mukharjee', 123);
+alter table customer modify customer_street varchar2(20);
 
-insert into branch values('Nagasandra', 'Banglore', 100000.01);
-insert into customer values('Nitesh Laddha', 'abc', 'Banglore');
-insert into accounts values(12, 'Nagasandra', 10000.01);
-insert into depositor values('Nitesh Laddha', 'abc', 'Banglore');
-insert into loan values(12, 'Nagasandra', 10000.01);
-insert into borrower values('Nitesh Laddha', 12345);
+insert into customer values('KEZAR', 'M G ROAD', 'BANGALORE');
+insert into customer values('LAL KRISHNA', 'ST MKS ROAD', 'BANGALORE');
+insert into customer values('RAHUL', 'AUGSTEN ROAD', 'BANGALORE');
+insert into customer values('LALLU', 'V S ROAD', 'BANGALORE');
+insert into customer values('FAIZAL', 'RESEDENCY ROAD', 'BANGALORE');
+insert into customer values('RAJEEV', 'DICKNSN ROAD', 'BANGALORE');
 
-select * from branch;
-select * from customer;
-select * from accounts;
+alter table loan modify branch_name varchar2(20);
+
+insert into loan values(10011, 'SBI JAYANAGAR', 10000);
+insert into loan values(10012, 'SBI VIJAY NAGAR', 5000);
+insert into loan values(10013, 'SBI HOSAKEREHALLI', 20000);
+insert into loan values(10014, 'SBI PD NAGAR',15000);
+insert into loan values(10015, 'SBI RAJAJI NAGAR', 25000);
+
+alter table borrower modify loan_number number(6);
+alter table borrower modify customer_name varchar2(20);
+
+insert into borrower values('KEZAR', 10011);
+insert into borrower values('LAL KRISHNA', 10012);
+insert into borrower values('RAHUL', 10013);
+insert into borrower values('LALLU', 10014);
+insert into borrower values('LAL KRISHNA', 10015);
+
+select * from branchn;
+select * from account;
 select * from depositor;
+select * from customer;
 select * from loan;
 select * from borrower;
